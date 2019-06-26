@@ -139,7 +139,7 @@ from lucid.misc.io import show
 
 import lucid.optvis.render as render
 from lucid.optvis.param.color import to_valid_rgb
-from lucid.optvis.param.spatial import pixel_image, fft_image
+# from lucid.optvis.param.spatial import pixel_image, fft_image
 
 
 
@@ -245,7 +245,7 @@ def video(t, w, h=None, batch=None, sd=None, decorrelate=True, fft=True, alpha=F
     channels = 4 if alpha else 3
     shape = [batch, t, w, h, channels]
 
-    param_f = fft_video if fft else pixel_image
+    param_f = fft_video if fft else uniform_video
     t = param_f(shape, sd=sd)
     rgb = to_valid_rgb(t[..., :3], decorrelate=decorrelate, sigmoid=True)
     if alpha:
