@@ -1,6 +1,6 @@
 # Visualizations of the I3D network
 
-An adaptation of lucid to visualizing features from the I3D
+An adaptation of lucid to visualizing features for the I3D
 video classification network pretrained on the kinetics dataset.
 
 Weights source: 
