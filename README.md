@@ -18,11 +18,6 @@ https://github.com/deepmind/kinetics-i3d
 [![video2](https://raw.githubusercontent.com/Arseny-N/c3d-vis/master/images/middle_layers_2.gif)](https://youtu.be/TKAXHMWmJDU)
 [![video3](https://raw.githubusercontent.com/Arseny-N/c3d-vis/master/images/middle_layers_3.gif)](https://youtu.be/gqOiKc8V0Io)
 
- [video0]()
- [video1]()
- [video2]()
- [video3]()
-
 ## Lower layers
 
 [![video](https://raw.githubusercontent.com/Arseny-N/c3d-vis/master/images/lower_layers.gif)](https://youtu.be/W4zUmejOVlA)
