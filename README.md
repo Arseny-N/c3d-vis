@@ -7,7 +7,7 @@ Weights source:
 https://github.com/deepmind/kinetics-i3d
 
 
-Upper layers: [video](https://youtu.be/hSyV6KqzVk4)
+Upper layers: [![video](https://raw.githubusercontent.com/Arseny-N/c3d-vis/master/images/middle_layers_0.gif)](https://youtu.be/vt5fpE0bzSY)
 
 Middle layers:
  [video0](https://youtu.be/gh4YevZwdxo)
