@@ -10,6 +10,9 @@ import numpy as np
 
 import time
 
+
+import contextlib 
+
 def add_paths(*ps):
     base = Path('~/c3d').expanduser()
 
@@ -24,8 +27,13 @@ def add_paths(*ps):
 
 
 
+#
+# video managment
+#
 
-dignify_layer = lambda layer: '-'.join(layer.split('/')[2:-1]).replace('/', '_')
+BASE_PATH = Path('../notebooks/videos')
+
+dignify_layer = lambda layer: layer.replace('/', '_')
 
 def render_suffix(xs):
     return ','.join( f"{k}={xs[k]}" for k in sorted(xs.keys()) if k != 'layer')
@@ -40,7 +48,10 @@ def to_clip(img):
 
 
 def save_vid(img, **suffix_data):
-    base_path = Path('./videos')
+    
+    assert 'name' in suffix_data, 'Should provide a name'
+    
+    base_path = BASE_PATH
     
     base_path = base_path / time.strftime("%Y-%m-%d") 
     base_path.mkdir(exist_ok=True)
@@ -94,9 +105,6 @@ def clip_to_array(clip):
     return np.array(list(clip.iter_frames()))
 
 
-#
-# video managment
-#
 import ast
 
 def guess_cast(x):
@@ -119,6 +127,79 @@ import pandas as pd
 
 def videos_df():
     return pd.DataFrame([ parse_path(file) 
-         for dir in Path('videos/').iterdir()
+         for dir in BASE_PATH.iterdir()
             for file in dir.iterdir() ]).sort_values(by='date').reset_index()
+
+
+#
+# clip making
+#
+
+
+def batchify(xs, batch_size):
+    
+    assert len(xs) > 0, "Should pass some videos"
+    
+    ixs = list(range(0, len(xs) + batch_size  , batch_size))
+    ret = []
+    for a, b in zip(ixs, ixs[1:]):
+        x = xs[a:b]
+        if len(x) < batch_size:
+            fill = mpy.VideoClip(lambda t: np.ones((*xs[0].size, 3)), duration=xs[0].duration)
+            # fill = mpy.ColorClip(xs[0].size, 'blue', duration=xs[0].duration, ismask=False).to_RGB()
+            x.extend([fill]* (batch_size - len(x)))
+        ret.append(x)
+    return ret
+
+import textwrap
+
+def caption_clip(clip, text, position=('center', 5), wrap=16, fontsize=10, font="DejaVu-Sans-Bold"):
+    
+    assert font in mpy.TextClip.list('font')
+    
+    text = '\n'.join(textwrap.wrap(text, wrap))                
+    text_clip = mpy.TextClip(text, fontsize=fontsize, color='white', font=font)
+    text_clip = text_clip.set_position(position).set_duration(clip.duration)
+
+    return mpy.CompositeVideoClip([clip, text_clip])
+    
+def display_videos(videos, videos_per_row=6, width=800, captions=None, sort_by_caption=True,save_as = None, ext='.mp4',
+                    **caption_kw):    
+    
+    
+    xs = []
+    txts = []
+    with contextlib.ExitStack() as stack:
+        for ix, v in enumerate(videos):
+            
+            try:
+                clip = mpy.VideoFileClip(str(v)).resize(width=width/videos_per_row) 
+            except:
+                print(f"Failed to open {v}")
+                continue
+            
+            if captions is not None:
+                text = captions[ix]
+                txts.append(text)
+                clip = caption_clip(clip, text, **caption_kw)                
+                
+            xs.append(clip)        
+            stack.callback(clip.close)
+        
+        if txts and sort_by_caption:
+            ixs = np.lexsort((txts,))
+            xs = [ xs[i] for i in ixs ] 
+        
+        xs = batchify(xs, videos_per_row)
+        clip = mpy.clips_array(xs)
+        
+        display(clip.ipython_display(loop=True))
+        
+        if save_as is not None:
+            print('Saving as ', save_as + ext)
+            if ext in {'.mp4'}:
+                clip.write_videofile(save_as + ext)
+            elif ext in {'.gif'}:
+                clip.write_gif(save_as + ext)
+
 
