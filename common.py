@@ -13,6 +13,10 @@ import time
 
 import contextlib 
 
+
+
+
+
 def add_paths(*ps):
     base = Path('~/c3d').expanduser()
 
@@ -80,6 +84,12 @@ def save_vid(img, **suffix_data):
 def showarray(img):
     clip = to_clip(img)
     display(clip.ipython_display())
+
+    
+
+def show(img):
+    clip = to_clip(img)
+    display(clip.ipython_display())
     
 def showarray_saved(img, **kw):
     path = save_vid(img, **kw)
@@ -103,6 +113,14 @@ def array_to_clip(img):
 
 def clip_to_array(clip):
     return np.array(list(clip.iter_frames()))
+
+
+cricket_video = Path('../kinetics-i3d/data/v_CricketShot_g04_c01_rgb.gif')
+
+def file_to_array(file):
+    if isinstance(file, Path):
+        file = str(file)
+    return clip_to_array(mpy.VideoFileClip(file))    
 
 
 import ast
@@ -163,7 +181,7 @@ def caption_clip(clip, text, position=('center', 5), wrap=16, fontsize=10, font=
 
     return mpy.CompositeVideoClip([clip, text_clip])
     
-def display_videos(videos, videos_per_row=6, width=800, captions=None, sort_by_caption=True,save_as = None, ext='.mp4',
+def display_videos(videos, captions=None, videos_per_row=6, width=800, fps=10, sort_by_caption=True,save_as = None, ext='.mp4',
                     **caption_kw):    
     
     
@@ -172,11 +190,12 @@ def display_videos(videos, videos_per_row=6, width=800, captions=None, sort_by_c
     with contextlib.ExitStack() as stack:
         for ix, v in enumerate(videos):
             
-            try:
-                clip = mpy.VideoFileClip(str(v)).resize(width=width/videos_per_row) 
-            except:
-                print(f"Failed to open {v}")
-                continue
+            if isinstance(v, (str, Path)):
+                clip = mpy.VideoFileClip(str(v))
+            else:
+                clip = array_to_clip(v)
+            
+            clip = clip.resize(width=width/videos_per_row) 
             
             if captions is not None:
                 text = captions[ix]
