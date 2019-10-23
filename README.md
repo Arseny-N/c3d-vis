@@ -10,6 +10,22 @@ https://github.com/deepmind/kinetics-i3d
 
 Click on the images to see a higher resolution video.
 
+
+
+## Shared image parametrizatoins 
+
+[![video](https://raw.githubusercontent.com/Arseny-N/c3d-vis/master/images/shared-image-parametrization.gif)](https://www.youtube.com/watch?v=-ZLReIKM6RU)
+
+
+## CPPN parametrizations
+
+[![video](https://raw.githubusercontent.com/Arseny-N/c3d-vis/master/images/cppn.gif)](https://www.youtube.com/watch?v=mfwh_MVclHc)
+
+## Alpha parametrizations
+
+[![video](https://raw.githubusercontent.com/Arseny-N/c3d-vis/master/images/alpha.gif)](https://www.youtube.com/watch?v=kM8-8piGXfA)
+
+
 ## Neuron Visualizations
 
 [![video](https://raw.githubusercontent.com/Arseny-N/c3d-vis/master/images/neuron.gif)](https://youtu.be/UD0vPGpnWbk)
