@@ -6,6 +6,8 @@ video classification network pretrained on the kinetics dataset.
 Weights source: 
 https://github.com/deepmind/kinetics-i3d
 
+A differentiable variant of the inverse n-dimensional furrier transform could be found [here](https://github.com/Arseny-N/c3d-vis/blob/9c943fd46646ba9ca67c30f00cfa104cb64e7c1f/lucid_video.py#L309).
+
 # Results
 
 Click on the images to see a higher resolution video.
