@@ -1,12 +1,9 @@
-# Visualizations of the I3D network
+# Visualizations of video classification networks
 
-An adaptation of lucid to visualizing features for the I3D
-video classification network pretrained on the kinetics dataset.
+An adaptation of lucid to visualizing features for the I3D video classification network.
+The video classification network pretrained on the kinetics dataset [weights source](https://github.com/deepmind/kinetics-i3d).
 
-Weights source: 
-https://github.com/deepmind/kinetics-i3d
-
-A differentiable variant of the inverse n-dimensional furrier transform could be found [here](https://github.com/Arseny-N/c3d-vis/blob/9c943fd46646ba9ca67c30f00cfa104cb64e7c1f/lucid_video.py#L309).
+At the time of the development of this code the n-dimensional real inverse furrier transform was not differentiable in TensorFlow. In order to bypass this a function turning the spectrum of a real signal to a hermitian array was developed, this allowed to make use of the complex inverse transform, which was differentiable, the source code could be found [here](https://github.com/Arseny-N/c3d-vis/blob/9c943fd46646ba9ca67c30f00cfa104cb64e7c1f/lucid_video.py#L309).
 
 # Results
 
